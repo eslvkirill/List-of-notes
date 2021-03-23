@@ -1,9 +1,7 @@
+import SearchPanel from "./components/SearchPanel/SearchPanel";
+
 function App() {
-  return (
-    <div className="App">
-      <h1>Hello React</h1>
-    </div>
-  );
+  return <SearchPanel />;
 }
 
 export default App;
