@@ -1,0 +1,17 @@
+$empty-notes-color: #868686;
+
+.notes-list {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 50vh;
+  height: auto;
+  margin: 20px 200px 0;
+
+  .notes-list__empty-notes {
+    margin-top: 170px;
+    font-size: 22px;
+    font-weight: bold;
+    color: $empty-notes-color;
+  }
+}

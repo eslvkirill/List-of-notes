@@ -1,0 +1,31 @@
+$button-color: #4e4d4d;
+$bg-color: rgb(150, 241, 158);
+$bg-hover-color: rgb(118, 243, 129);
+$bg-disabled-color: #dad6d67a;
+
+.button {
+  width: 105px;
+  height: 38px;
+  margin-right: 3px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-weight: bold;
+  color: $button-color;
+  background-color: $bg-color;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    transition: 0.3s;
+    background-color: $bg-hover-color;
+  }
+}
+
+.button__disabled-true {
+  background-color: $bg-disabled-color;
+
+  &:hover {
+    background-color: $bg-disabled-color;
+  }
+}
