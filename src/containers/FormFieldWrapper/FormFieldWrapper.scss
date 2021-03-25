@@ -1,0 +1,12 @@
+.form-field {
+  display: flex;
+  width: 8%;
+
+  &:first-child {
+    width: 91%;
+  }
+
+  &:last-child {
+    width: 100%;
+  }
+}

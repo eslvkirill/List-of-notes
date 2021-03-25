@@ -1,0 +1,11 @@
+$bg-color: transparent;
+
+.input {
+  width: 100%;
+  padding: 11px 12px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: $bg-color;
+  transition: 0.3s;
+}

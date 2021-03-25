@@ -1,0 +1,76 @@
+@import "../../../mixinsStyles/mixinsStyles.scss";
+
+$notes-card-primary-color: rgba(20, 20, 20, 0.87);
+$notes-card-text-shadow: 1px 0px 1px rgba(255, 255, 255, 0.603),
+  1px 0 1px rgba(36, 36, 36, 0.418);
+$notes-card-border-color: #c6bdbd;
+$bg-trash-can-hover-color: #cf3535d7;
+$scrollbar-thumb-color: #28b6f6;
+$scrollbar-thumb-border-color: #37104d;
+$scrollbar-track-piece-color: transparent;
+
+.notes-list__wrapper {
+  @include flexible();
+  flex-wrap: wrap;
+  width: 100%;
+
+  .notes-card {
+    width: 55%;
+    max-height: 400px;
+    margin-bottom: 15px;
+    padding: 11px 12px;
+    border: 2px solid $notes-card-border-color;
+    border-radius: 10px;
+    text-shadow: $notes-card-text-shadow;
+    color: $notes-card-primary-color;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    overflow: auto;
+    cursor: pointer;
+    @include box-shadow(5px, 5px, 5px, -5px, rgba(34, 60, 80, 0.6));
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      color: default;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      width: 8px;
+      border: 2px solid $scrollbar-thumb-border-color;
+      border-radius: 10px;
+      background: $scrollbar-thumb-color;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+      margin: 6px auto 6px;
+      border-radius: 10px;
+      background: $scrollbar-track-piece-color;
+    }
+
+    .notes-card__title {
+      margin: 0 0 10px;
+    }
+
+    .notes-card__description {
+      margin: 0 0 10px;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+
+    .notes-card__trash-can {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+      width: 50px;
+      font-size: 30px;
+      border: 2px solid #000000;
+      border-radius: 5px;
+      background-color: transparent;
+
+      &:hover {
+        background-color: $bg-trash-can-hover-color;
+      }
+    }
+  }
+}
