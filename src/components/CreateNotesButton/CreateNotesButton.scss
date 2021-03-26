@@ -3,27 +3,24 @@
 $bg-create-button-color: #28b6f6;
 $scale: scale(1.15);
 
-.create-notes {
+.create-notes-button {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  bottom: 50px;
+  right: 100px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 28px;
+  background-color: $bg-create-button-color;
+  @include box-shadow(0px, 4px, 10px, 2px, rgba(34, 60, 80, 0.2));
 
-  .create-notes__button {
-    width: 50px;
-    height: 50px;
-    margin: 0 100px 50px 0;
-    border-radius: 50%;
-    font-size: 28px;
+  &:hover {
     background-color: $bg-create-button-color;
-    @include box-shadow(0px, 4px, 10px, 2px, rgba(34, 60, 80, 0.2));
-
-    &:hover {
-      transform: $scale;
-    }
-  }
-
-  .create-notes__button__popup-open {
-    @extend .create-notes__button;
     transform: $scale;
   }
+}
+
+.create-notes-button__popup-open {
+  @extend .create-notes-button;
+  transform: $scale;
 }

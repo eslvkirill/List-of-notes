@@ -1,27 +1,26 @@
-import React, { useState } from "react";
-import PopUpWindow from "../PopUpWindow/PopUpWindow";
+import React from "react";
+import { usePopUp } from "../../containers/Contexts/PopUpContext";
 import Button from "../UiItems/Button/Button";
 import "./CreateNotesButton.scss";
 
-const CreateNotesButton = () => {
-  const [active, setActive] = useState(false);
+const CreateNotesButton = (props) => {
+  const { popUp, changePopUpWindow, setPopUpType } = usePopUp();
 
-  const changePopUpWindow = () => setActive(!active);
+  const onClickHandler = () => {
+    setPopUpType("create");
+    props.setScaleButton(false);
+    changePopUpWindow();
+  };
 
   return (
-    <>
-      <div className="create-notes">
-        <Button
-          className={`create-notes__button${
-            active ? "__popup-open" : ""
-          } footer__create-notes-button`}
-          onClick={() => changePopUpWindow()}
-        >
-          +
-        </Button>
-      </div>
-      <PopUpWindow active={active} changePopUpWindow={changePopUpWindow} />
-    </>
+    <Button
+      className={`create-notes-button${
+        popUp && !props.scaleButton ? "__popup-open" : ""
+      }`}
+      onClick={onClickHandler}
+    >
+      +
+    </Button>
   );
 };
 

@@ -2,7 +2,7 @@
 
 $primary-color: #868686;
 $error-color: #ff2d2d;
-$bg-layout-color: #ebebeba8;
+$bg-layout-color: rgba(214, 214, 214, 0.659);
 $bg-form-color: #ffffff;
 $bg-form-fields-color: #f1fafe;
 $bg-close-button-color: transparent;
@@ -22,7 +22,16 @@ $bg-color-input-color: transparent;
   height: 100vh;
   background-color: $bg-layout-color;
 
-  .pop-up-window__create-notes-form {
+  // .notes-form {
+  // }
+
+  // .create-form {
+  // }
+
+  // .save-form {
+  // }
+
+  .pop-up-window__notes-form {
     @include flexible();
     flex-direction: column;
     width: 700px;
@@ -62,7 +71,7 @@ $bg-color-input-color: transparent;
       }
 
       .notes-info__color {
-        height: 90%;
+        height: 98%;
         padding: 0;
         background: $bg-color-input-color;
         cursor: pointer;
@@ -82,7 +91,7 @@ $bg-color-input-color: transparent;
       }
     }
 
-    .create-notes-form__buttons-section {
+    .notes-form__buttons-section {
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -105,7 +114,7 @@ $bg-color-input-color: transparent;
     }
 
     .buttons-section {
-      @extend .create-notes-form__buttons-section;
+      @extend .notes-form__buttons-section;
       justify-content: flex-end;
     }
   }

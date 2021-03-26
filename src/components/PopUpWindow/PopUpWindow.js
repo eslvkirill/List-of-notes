@@ -2,55 +2,28 @@ import React, { useState } from "react";
 import Input from "../UiItems/Input/Input";
 import Textarea from "../UiItems/Textarea/Textarea";
 import Button from "../UiItems/Button/Button";
-import { createField } from "./createField/createField";
-import { validate, validateFields } from "../../validation/validation";
-import { useNotes } from "../../containers/NotesContext/NotesContext";
+import {
+  // validate,
+  validateFields,
+} from "../../validation/validation";
+import { usePopUp } from "../../containers/Contexts/PopUpContext";
+import { useForm } from "../../containers/Contexts/FormContext";
+import { useNotes } from "../../containers/Contexts/NotesContext";
 import "./PopUpWindow.scss";
 
-const colorInputDefaultValue = "#e9e4eb";
+const defaultErrorMessage = "Заполните хотя бы одно поле";
 
-function createNewFormFields(
-  placeholder,
-  maxLength,
-  type = "text",
-  value = "",
-  errorMessage = null
-) {
-  return createField(
-    {
-      placeholder,
-      errorMessage: "*" + errorMessage,
-      type,
-      value,
-    },
-    { required: true, minLength: 1, maxLength }
-  );
-}
-
-function formFields() {
-  return {
-    title: createNewFormFields(
-      "Введите заголовок",
-      // "Поле не должно превышать 30 символов",
-      30
-    ),
-    color: createNewFormFields(
-      "Цвет заметки",
-      7,
-      "color",
-      colorInputDefaultValue
-    ),
-    description: createNewFormFields("Текст заметки"),
-  };
-}
-
-const PopUpWindow = (props) => {
-  const [notesFields, setNotesFields] = useState(formFields());
-  const [isFormValid, setFormValid] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(
-    "Заполните хотя бы одно поле"
-  );
+const PopUpWindow = () => {
+  const {
+    notesFields,
+    setNotesFields,
+    isFormValid,
+    setFormValid,
+    clearForm,
+  } = useForm();
+  const { popUp, changePopUpWindow, popUpType } = usePopUp();
   const [notes, setNotes] = useNotes();
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
   const createNotes = () => {
     const newNotes = {
@@ -62,27 +35,51 @@ const PopUpWindow = (props) => {
     setNotes([{ ...newNotes }, ...notes]);
   };
 
-  const resetAllFields = () => {
-    setNotesFields(formFields());
+  const editNote = () => {
+    notes.map((note) => {
+      Object.keys(notesFields).map((formField) => {
+        if (note.id === notesFields[formField].noteId) {
+          note[formField] = notesFields[formField].value;
+
+          notes.splice(
+            0,
+            0,
+            notes.splice(
+              notes.findIndex((v) => v.id === note.id),
+              1
+            )[0]
+          );
+        }
+        return notes;
+      });
+      return note;
+    });
+
+    setNotes(notes);
+  };
+
+  const resetAll = () => {
+    clearForm();
     setErrorMessage("Заполните хотя бы одно поле");
     setFormValid(false);
-    props.changePopUpWindow();
+    changePopUpWindow();
   };
 
   const submitNewNotes = (event) => {
     event.preventDefault();
-    resetAllFields();
+    resetAll();
   };
 
   const onChangeFieldsHandler = (event, fieldName) => {
     const field = notesFields[fieldName];
-    const titleMaxValue = notesFields["title"].value.length <= 30;
+    const titleMaxValue = notesFields["title"].value.length < 30;
 
     field.value = event.target.value;
     // field.valid = validate(field.value, field.validation);
 
-    if (!titleMaxValue)
+    if (!titleMaxValue) {
       setErrorMessage("Длина заголовка не должна превышать 30 символов");
+    } else setErrorMessage(defaultErrorMessage);
 
     setFormValid(validateFields(notesFields) && titleMaxValue);
     field.valid = isFormValid;
@@ -102,7 +99,6 @@ const PopUpWindow = (props) => {
           placeholder={field.placeholder}
           value={field.value}
           valid={field.valid}
-          errorMessage={field.errorMessage}
           className={`notes-info__${fieldName} notes-info__field ${
             !isFormValid && fieldName !== "color"
               ? "notes-info__field-error"
@@ -115,51 +111,52 @@ const PopUpWindow = (props) => {
   };
 
   return (
-    <div
-      className={`pop-up-window__showing-${props.active}`}
-      onClick={resetAllFields}
-    >
-      <form
-        className="pop-up-window__create-notes-form create-notes-form"
-        onSubmit={submitNewNotes}
-        onClick={(event) => event.stopPropagation()}
-        // style={{
-        //   backgroundColor: notesFields.color.value,
-        // }}
-      >
-        <div className="create-notes-form__notes-info notes-info">
-          {renderFields()}
-        </div>
-        <div
-          className={
-            !isFormValid
-              ? "create-notes-form__buttons-section"
-              : "buttons-section"
-          }
-        >
-          {!isFormValid ? (
-            <div className="error-message">*{errorMessage}</div>
-          ) : null}
-          <div className="buttons-section__wrapper">
-            <Button
-              type="submit"
-              disabled={!isFormValid}
-              className="buttons-section__create-button"
-              onClick={createNotes}
+    <>
+      {popUp ? (
+        <div className={`pop-up-window__showing-${popUp}`} onClick={resetAll}>
+          <form
+            className={`pop-up-window__notes-form notes-form ${
+              popUpType === "create" ? "create" : "save"
+            }-form`}
+            onSubmit={submitNewNotes}
+            onClick={(event) => event.stopPropagation()}
+            // style={{
+            //   backgroundColor: notesFields.color.value,
+            // }}
+          >
+            <div className="notes-form__notes-info notes-info">
+              {renderFields()}
+            </div>
+            <div
+              className={
+                !isFormValid ? "notes-form__buttons-section" : "buttons-section"
+              }
             >
-              Создать
-            </Button>
-            <Button
-              type="button"
-              className="buttons-section__close-button"
-              onClick={resetAllFields}
-            >
-              Закрыть
-            </Button>
-          </div>
+              {!isFormValid ? (
+                <div className="error-message">*{errorMessage}</div>
+              ) : null}
+              <div className="buttons-section__wrapper">
+                <Button
+                  type="submit"
+                  disabled={!isFormValid}
+                  className="buttons-section__create-button"
+                  onClick={popUpType === "create" ? createNotes : editNote}
+                >
+                  {popUpType === "create" ? "Создать" : "Сохранить"}
+                </Button>
+                <Button
+                  type="button"
+                  className="buttons-section__close-button"
+                  onClick={resetAll}
+                >
+                  Закрыть
+                </Button>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      ) : null}
+    </>
   );
 };
 
