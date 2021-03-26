@@ -12,10 +12,16 @@ const NotesCard = (props) => (
             backgroundColor: note.color,
           }}
           className="notes-list__notes-card notes-card"
+          onClick={() => props.editNotesCard(note.id)}
         >
           <h2 className="notes-card__title">{note.title}</h2>
           <p className="notes-card__description">{note.description}</p>
-          <Button className="notes-card__trash-can">🗑</Button>
+          <Button
+            className="notes-card__trash-can"
+            onClick={(event) => props.removeNotesCard(event, note.id)}
+          >
+            🗑
+          </Button>
         </article>
       );
     })}

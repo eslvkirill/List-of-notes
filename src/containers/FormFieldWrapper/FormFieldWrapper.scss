@@ -1,6 +1,8 @@
+@import "../../mixinsStyles/mixinsStyles.scss";
+
 .form-field {
-  display: flex;
-  width: 8%;
+  @include flexible();
+  width: 9%;
 
   &:first-child {
     width: 91%;

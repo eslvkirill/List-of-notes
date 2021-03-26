@@ -24,6 +24,7 @@ $bg-disabled-color: #dad6d67a;
 
 .button__disabled-true {
   background-color: $bg-disabled-color;
+  cursor: not-allowed;
 
   &:hover {
     background-color: $bg-disabled-color;
