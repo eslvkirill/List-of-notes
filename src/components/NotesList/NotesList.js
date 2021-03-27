@@ -8,8 +8,15 @@ import "./NotesList.scss";
 
 const NotesCards = () => {
   const [scaleButton, setScaleButton] = useState(false);
-  const [notes, setNotes] = useNotes();
-  const { changePopUpWindow, setPopUpType } = usePopUp();
+  const {
+    notes,
+    setNotes,
+    filterNotes,
+    setFilterNotes,
+    checkNotesData,
+    setCheckNotesData,
+  } = useNotes();
+  const { changePopUpWindow, popUpType, setPopUpType } = usePopUp();
   const { notesFields, setNotesFields, setFormValid } = useForm();
 
   const removeNotesCard = (event, noteId) => {
@@ -17,7 +24,14 @@ const NotesCards = () => {
     const confirm = window.confirm(
       "Вы действительно хотите удалить эту заметку?"
     );
-    setNotes(confirm ? notes.filter((note) => note.id !== noteId) : notes);
+
+    const removeData = (storage) =>
+      confirm ? storage.filter((note) => note.id !== noteId) : storage;
+
+    if (setCheckNotesData === setFilterNotes) {
+      setCheckNotesData(removeData(checkNotesData));
+      setNotes(removeData(notes));
+    }
   };
 
   const editNotesCard = (noteId) => {
@@ -25,13 +39,12 @@ const NotesCards = () => {
     setPopUpType("save");
     setScaleButton(true);
 
-    notes.map((note) => {
+    checkNotesData.map((note) => {
       if (note.id === noteId) {
         Object.keys(notesFields).map((formField) => {
           notesFields[formField].noteId = note.id;
           notesFields[formField].value = note[formField];
           setFormValid(true);
-
           return formField;
         });
       }
@@ -42,15 +55,20 @@ const NotesCards = () => {
 
   return (
     <main className="notes-list">
-      {notes.length ? (
+      {checkNotesData.length ? (
         <NotesCard
-          notes={notes}
+          notes={checkNotesData}
+          popUpType={popUpType}
           removeNotesCard={removeNotesCard}
           editNotesCard={editNotesCard}
         />
       ) : (
         <div className="notes-list__empty-notes">
-          Создайте Вашу первую заметку!
+          {filterNotes !== null &&
+          filterNotes.length === 0 &&
+          notes.length !== 0
+            ? "Ничего не найдено :("
+            : "Создайте Вашу первую заметку!"}
         </div>
       )}
       <CreateNotesButton

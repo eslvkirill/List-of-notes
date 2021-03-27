@@ -14,8 +14,16 @@ $scrollbar-track-piece-color: transparent;
   flex-wrap: wrap;
   width: 100%;
 
+  // display: grid;
+  // grid-template-columns: repeat(3, 1fr);
+  // align-items: baseline;
+  // justify-items: center;
+  // grid-auto-flow: dense;
+  // grid-gap: 50px 50px;
+  // gap: 15px 15px;
+
   .notes-card {
-    width: 55%;
+    width: 85%;
     max-height: 400px;
     margin-bottom: 15px;
     padding: 11px 12px;
@@ -28,6 +36,12 @@ $scrollbar-track-piece-color: transparent;
     overflow: auto;
     cursor: pointer;
     @include box-shadow(5px, 5px, 5px, -5px, rgba(34, 60, 80, 0.6));
+    transition: 0.3s;
+
+    &:hover {
+      transform: scale(1.01);
+      transition: 0.3s;
+    }
 
     &::-webkit-scrollbar {
       width: 8px;
@@ -72,5 +86,26 @@ $scrollbar-track-piece-color: transparent;
         background-color: $bg-trash-can-hover-color;
       }
     }
+  }
+
+  .note-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .note-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 500ms, transform 500ms;
+  }
+
+  .note-exit {
+    opacity: 1;
+  }
+
+  .note-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 500ms, transform 500ms;
   }
 }
