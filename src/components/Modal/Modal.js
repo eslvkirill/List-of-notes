@@ -1,19 +1,16 @@
 import React, { useState } from "react";
+import { validateFields } from "../../exportFunctions/validation/validation";
+import { useModal } from "../../containers/Contexts/ModalContext";
+import { useForm } from "../../containers/Contexts/FormContext";
+import { useNotes } from "../../containers/Contexts/NotesContext";
 import Input from "../UiItems/Input/Input";
 import Textarea from "../UiItems/Textarea/Textarea";
 import Button from "../UiItems/Button/Button";
-import {
-  // validate,
-  validateFields,
-} from "../../validation/validation";
-import { usePopUp } from "../../containers/Contexts/PopUpContext";
-import { useForm } from "../../containers/Contexts/FormContext";
-import { useNotes } from "../../containers/Contexts/NotesContext";
-import "./PopUpWindow.scss";
+import "./Modal.scss";
 
 const defaultErrorMessage = "Заполните хотя бы одно поле";
 
-const PopUpWindow = () => {
+const Modal = () => {
   const {
     notesFields,
     setNotesFields,
@@ -21,8 +18,14 @@ const PopUpWindow = () => {
     setFormValid,
     clearForm,
   } = useForm();
-  const { popUp, changePopUpWindow, popUpType } = usePopUp();
-  const { checkNotesData, setCheckNotesData } = useNotes();
+  const { modal, changeModal, modalType } = useModal();
+  const {
+    notes,
+    setNotes,
+    setFilterNotes,
+    checkNotesData,
+    setCheckNotesData,
+  } = useNotes();
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
   const createNotes = () => {
@@ -32,7 +35,10 @@ const PopUpWindow = () => {
       description: notesFields.description.value,
       color: notesFields.color.value,
     };
-    setCheckNotesData([{ ...newNotes }, ...checkNotesData]);
+    const setNewNotice = (storage) => [{ ...newNotes }, ...storage];
+
+    setCheckNotesData(setNewNotice(checkNotesData));
+    if (setCheckNotesData === setFilterNotes) setNotes(setNewNotice(notes));
   };
 
   const editNote = () => {
@@ -40,7 +46,6 @@ const PopUpWindow = () => {
       Object.keys(notesFields).map((formField) => {
         if (note.id === notesFields[formField].noteId) {
           note[formField] = notesFields[formField].value;
-
           checkNotesData.splice(
             0,
             0,
@@ -60,7 +65,7 @@ const PopUpWindow = () => {
   const resetAll = () => {
     setErrorMessage("Заполните хотя бы одно поле");
     setFormValid(false);
-    changePopUpWindow();
+    changeModal();
     clearForm();
   };
 
@@ -74,7 +79,6 @@ const PopUpWindow = () => {
     const titleMaxValue = notesFields["title"].value.length < 30;
 
     field.value = event.target.value;
-    // field.valid = validate(field.value, field.validation);
 
     if (!titleMaxValue) {
       setErrorMessage("Длина заголовка не должна превышать 30 символов");
@@ -98,10 +102,8 @@ const PopUpWindow = () => {
           placeholder={field.placeholder}
           value={field.value}
           valid={field.valid}
-          className={`notes-info__${fieldName} notes-info__field ${
-            !isFormValid && fieldName !== "color"
-              ? "notes-info__field-error"
-              : null
+          className={`form-items__${fieldName} form-items__field form-items__fields${
+            !isFormValid && fieldName !== "color" ? "_onError" : ""
           }`}
           onChange={(event) => onChangeFieldsHandler(event, fieldName)}
         />
@@ -111,33 +113,38 @@ const PopUpWindow = () => {
 
   return (
     <>
-      <div className={`pop-up-window__showing-${popUp}`} onClick={resetAll}>
+      <div
+        className={`modal-window${modal ? "_active" : ""}`}
+        onClick={resetAll}
+      >
         <form
-          className={`pop-up-window__notes-form notes-form ${
-            popUpType === "create" ? "create" : "save"
-          }-form`}
+          className={`modal-window__notes-form notes-form notes-form${
+            modalType === "create" ? "_create" : "_save"
+          }`}
           onSubmit={submitNewNotes}
           onClick={(event) => event.stopPropagation()}
         >
-          <div className="notes-form__notes-info notes-info">
+          <div className="notes-form__form-items form-items">
             {renderFields()}
           </div>
           <div
-            className={
-              !isFormValid ? "notes-form__buttons-section" : "buttons-section"
-            }
+            className={`notes-form__buttons-section${
+              !isFormValid ? "_onError" : ""
+            } buttons-section`}
           >
             {!isFormValid ? (
-              <div className="error-message">*{errorMessage}</div>
+              <div className="notes-form__error-message error-message">
+                *{errorMessage}
+              </div>
             ) : null}
             <div className="buttons-section__wrapper">
               <Button
                 type="submit"
                 disabled={!isFormValid}
                 className="buttons-section__create-button"
-                onClick={popUpType === "create" ? createNotes : editNote}
+                onClick={modalType === "create" ? createNotes : editNote}
               >
-                {popUpType === "create" ? "Создать" : "Сохранить"}
+                {modalType === "create" ? "Создать" : "Сохранить"}
               </Button>
               <Button
                 type="button"
@@ -154,4 +161,4 @@ const PopUpWindow = () => {
   );
 };
 
-export default PopUpWindow;
+export default Modal;

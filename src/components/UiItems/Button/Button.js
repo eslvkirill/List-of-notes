@@ -8,7 +8,7 @@ const Button = (props) => (
     className={[
       props.className,
       "button",
-      `button__disabled-${props.disabled}`,
+      `${props.disabled !== undefined ? "_disabled_" + props.disabled : null}`,
     ].join(" ")}
     disabled={props.disabled}
   >

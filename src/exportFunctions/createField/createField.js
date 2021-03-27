@@ -1,16 +1,7 @@
 const colorInputDefaultValue = "#e9e4eb";
 
-export function createField(config, validation) {
-  return {
-    ...config,
-    validation,
-    valid: !validation,
-    autoComplete: "off",
-  };
-}
-
 export function createNewFormFields(placeholder, type = "text", value = "") {
-  return createField({ placeholder, type, value }, { required: true });
+  return { autoComplete: "off", placeholder, type, value };
 }
 
 export function formFields() {

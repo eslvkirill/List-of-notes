@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNotes } from "../../containers/Contexts/NotesContext";
-import { usePopUp } from "../../containers/Contexts/PopUpContext";
+import { useModal } from "../../containers/Contexts/ModalContext";
 import { useForm } from "../../containers/Contexts/FormContext";
 import CreateNotesButton from "../CreateNotesButton/CreateNotesButton";
 import NotesCard from "./NotesCard/NotesCard";
@@ -16,7 +16,7 @@ const NotesCards = () => {
     checkNotesData,
     setCheckNotesData,
   } = useNotes();
-  const { changePopUpWindow, popUpType, setPopUpType } = usePopUp();
+  const { changeModal, modalType, setModalType } = useModal();
   const { notesFields, setNotesFields, setFormValid } = useForm();
 
   const removeNotesCard = (event, noteId) => {
@@ -28,15 +28,16 @@ const NotesCards = () => {
     const removeData = (storage) =>
       confirm ? storage.filter((note) => note.id !== noteId) : storage;
 
+    setCheckNotesData(removeData(checkNotesData));
+
     if (setCheckNotesData === setFilterNotes) {
-      setCheckNotesData(removeData(checkNotesData));
       setNotes(removeData(notes));
     }
   };
 
   const editNotesCard = (noteId) => {
-    changePopUpWindow();
-    setPopUpType("save");
+    changeModal();
+    setModalType("save");
     setScaleButton(true);
 
     checkNotesData.map((note) => {
@@ -58,7 +59,7 @@ const NotesCards = () => {
       {checkNotesData.length ? (
         <NotesCard
           notes={checkNotesData}
-          popUpType={popUpType}
+          modalType={modalType}
           removeNotesCard={removeNotesCard}
           editNotesCard={editNotesCard}
         />

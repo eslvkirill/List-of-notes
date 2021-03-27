@@ -1,6 +1,6 @@
 $button-color: #4e4d4d;
-$bg-color: rgb(150, 241, 158);
-$bg-hover-color: rgb(118, 243, 129);
+$bg-color: #96f19e;
+$bg-hover-color: #76f381;
 $bg-disabled-color: #dad6d67a;
 
 .button {
@@ -22,7 +22,7 @@ $bg-disabled-color: #dad6d67a;
   }
 }
 
-.button__disabled-true {
+.button_disabled_true {
   background-color: $bg-disabled-color;
   cursor: not-allowed;
 

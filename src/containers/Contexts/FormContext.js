@@ -9,7 +9,6 @@ export const FormProvider = ({ children }) => {
   const [form, setForm] = useState(formFields());
   const [isFormValid, setFormValid] = useState(false);
 
-  // const changePopUpWindow = () => setPopUp(!popUp);
   const clearForm = () => setForm(formFields());
 
   return (
