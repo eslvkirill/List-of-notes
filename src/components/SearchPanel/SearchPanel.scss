@@ -5,8 +5,8 @@ $bg-header-lines-color: #f5f5f5;
 $bg-header-lines-color: #f5f5f5;
 
 .header {
+  margin: 5px;
   .header__line {
-    margin: 10px 0;
     background: $bg-header-lines-color;
   }
 
@@ -14,20 +14,14 @@ $bg-header-lines-color: #f5f5f5;
     display: flex;
     justify-content: center;
     width: 800px;
-    margin: auto;
+    margin: 0 auto 10px;
 
     .search-form__input {
       width: 800px;
       height: 42px;
-      padding-left: 25px;
       border-radius: 0px 5px 5px 0px;
-      font-size: 15px;
-      color: $search-form-color;
+      font-size: 16px;
       background: $bg-search-form-color;
-
-      &:focus {
-        font-size: 17px;
-      }
 
       &::placeholder {
         font-size: 15px;
@@ -38,18 +32,24 @@ $bg-header-lines-color: #f5f5f5;
       width: initial;
       height: initial;
       margin: 0;
-      padding-left: 18px;
+      padding-left: 16px;
       border-radius: 5px 0px 0px 5px;
-      background: $bg-search-form-color;
+      font-size: 15px;
+      background-color: $bg-search-form-color;
 
       .search-form__icon-logo {
+        box-sizing: content-box;
+        padding: 7px;
+        border-radius: 50%;
         color: $search-form-color;
-        transition: 0.2s;
+        transform: scale(1);
+        transition: 0.3s;
         cursor: pointer;
 
         &:hover {
-          font-size: 15px;
-          transition: 0.2s;
+          background-color: rgba(165, 164, 164, 0.397);
+          transform: scale(1.1);
+          transition: 0.3s;
         }
       }
     }

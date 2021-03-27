@@ -22,47 +22,46 @@ const PopUpWindow = () => {
     clearForm,
   } = useForm();
   const { popUp, changePopUpWindow, popUpType } = usePopUp();
-  const [notes, setNotes] = useNotes();
+  const { checkNotesData, setCheckNotesData } = useNotes();
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
   const createNotes = () => {
     const newNotes = {
-      id: Math.random().toString(26).slice(2),
+      id: Math.random().toString(26),
       title: notesFields.title.value,
       description: notesFields.description.value,
       color: notesFields.color.value,
     };
-    setNotes([{ ...newNotes }, ...notes]);
+    setCheckNotesData([{ ...newNotes }, ...checkNotesData]);
   };
 
   const editNote = () => {
-    notes.map((note) => {
+    checkNotesData.map((note) => {
       Object.keys(notesFields).map((formField) => {
         if (note.id === notesFields[formField].noteId) {
           note[formField] = notesFields[formField].value;
 
-          notes.splice(
+          checkNotesData.splice(
             0,
             0,
-            notes.splice(
-              notes.findIndex((v) => v.id === note.id),
+            checkNotesData.splice(
+              checkNotesData.findIndex((v) => v.id === note.id),
               1
             )[0]
           );
         }
-        return notes;
+        return checkNotesData;
       });
       return note;
     });
-
-    setNotes(notes);
+    setCheckNotesData(checkNotesData);
   };
 
   const resetAll = () => {
-    clearForm();
     setErrorMessage("Заполните хотя бы одно поле");
     setFormValid(false);
     changePopUpWindow();
+    clearForm();
   };
 
   const submitNewNotes = (event) => {
@@ -112,50 +111,45 @@ const PopUpWindow = () => {
 
   return (
     <>
-      {popUp ? (
-        <div className={`pop-up-window__showing-${popUp}`} onClick={resetAll}>
-          <form
-            className={`pop-up-window__notes-form notes-form ${
-              popUpType === "create" ? "create" : "save"
-            }-form`}
-            onSubmit={submitNewNotes}
-            onClick={(event) => event.stopPropagation()}
-            // style={{
-            //   backgroundColor: notesFields.color.value,
-            // }}
+      <div className={`pop-up-window__showing-${popUp}`} onClick={resetAll}>
+        <form
+          className={`pop-up-window__notes-form notes-form ${
+            popUpType === "create" ? "create" : "save"
+          }-form`}
+          onSubmit={submitNewNotes}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="notes-form__notes-info notes-info">
+            {renderFields()}
+          </div>
+          <div
+            className={
+              !isFormValid ? "notes-form__buttons-section" : "buttons-section"
+            }
           >
-            <div className="notes-form__notes-info notes-info">
-              {renderFields()}
+            {!isFormValid ? (
+              <div className="error-message">*{errorMessage}</div>
+            ) : null}
+            <div className="buttons-section__wrapper">
+              <Button
+                type="submit"
+                disabled={!isFormValid}
+                className="buttons-section__create-button"
+                onClick={popUpType === "create" ? createNotes : editNote}
+              >
+                {popUpType === "create" ? "Создать" : "Сохранить"}
+              </Button>
+              <Button
+                type="button"
+                className="buttons-section__close-button"
+                onClick={resetAll}
+              >
+                Закрыть
+              </Button>
             </div>
-            <div
-              className={
-                !isFormValid ? "notes-form__buttons-section" : "buttons-section"
-              }
-            >
-              {!isFormValid ? (
-                <div className="error-message">*{errorMessage}</div>
-              ) : null}
-              <div className="buttons-section__wrapper">
-                <Button
-                  type="submit"
-                  disabled={!isFormValid}
-                  className="buttons-section__create-button"
-                  onClick={popUpType === "create" ? createNotes : editNote}
-                >
-                  {popUpType === "create" ? "Создать" : "Сохранить"}
-                </Button>
-                <Button
-                  type="button"
-                  className="buttons-section__close-button"
-                  onClick={resetAll}
-                >
-                  Закрыть
-                </Button>
-              </div>
-            </div>
-          </form>
-        </div>
-      ) : null}
+          </div>
+        </form>
+      </div>
     </>
   );
 };
