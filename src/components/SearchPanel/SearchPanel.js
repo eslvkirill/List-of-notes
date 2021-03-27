@@ -44,13 +44,13 @@ const SearchPanel = () => {
         );
       });
       setFilteredData(filteredNotes);
-    }
+    } else setFilterNotes(notes);
   };
 
   return (
     <header className="header">
-      <hr className="line header__line" />
-      <form action="" method="get" className="search-form header__search-form">
+      <hr className="header__hr-line hr-line" />
+      <form action="" method="get" className="header__search-form search-form">
         <Button
           type="submit"
           className="search-form__button"
@@ -66,7 +66,7 @@ const SearchPanel = () => {
           onChange={(event) => onChangeInputHandler(event)}
         />
       </form>
-      <hr className="line header__line" />
+      <hr className="header__hr-line hr-line" />
     </header>
   );
 };

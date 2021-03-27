@@ -1,19 +1,20 @@
 @import "../../mixinsStyles/mixinsStyles.scss";
 
 $primary-color: #868686;
+$box-shadow-modal-window-color: #223c5033;
 $error-color: #ff2d2d;
-$bg-layout-color: rgba(214, 214, 214, 0.659);
+$bg-layout-color: #d6d6d6a8;
 $bg-form-color: #ffffff;
 $bg-form-fields-color: #f1fafe;
 $bg-close-button-color: transparent;
-$bg-hover-close-button-color: rgb(247, 160, 160);
+$bg-hover-close-button-color: #f7a0a0;
 $bg-color-input-color: transparent;
 
-.pop-up-window__showing-false {
+.modal-window {
   display: none;
 }
 
-.pop-up-window__showing-true {
+.modal-window_active {
   @include flexible();
   position: fixed;
   top: 0;
@@ -22,7 +23,7 @@ $bg-color-input-color: transparent;
   height: 100vh;
   background-color: $bg-layout-color;
 
-  .pop-up-window__notes-form {
+  .modal-window__notes-form {
     @include flexible();
     flex-direction: column;
     width: 715px;
@@ -31,14 +32,14 @@ $bg-color-input-color: transparent;
     padding: 0 15px;
     border-radius: 5px;
     background-color: $bg-form-color;
-    @include box-shadow(0px, 5px, 10px, 2px, rgba(34, 60, 80, 0.2));
+    @include box-shadow(0px, 5px, 10px, 2px, $box-shadow-modal-window-color);
 
-    .notes-info {
+    .form-items {
       display: flex;
       flex-wrap: wrap;
       width: 100%;
 
-      .notes-info__field {
+      .form-items__field {
         margin-bottom: 5px;
         caret-color: $primary-color;
 
@@ -47,11 +48,11 @@ $bg-color-input-color: transparent;
         }
       }
 
-      .notes-info__field-error {
+      .form-items__fields_onError {
         border: 1px solid $error-color;
       }
 
-      .notes-info__title {
+      .form-items__title {
         width: 100%;
         margin-right: 5px;
         font-size: 20px;
@@ -61,7 +62,11 @@ $bg-color-input-color: transparent;
         }
       }
 
-      .notes-info__color {
+      .form-items__description {
+        font-size: 16px;
+      }
+
+      .form-items__color {
         height: 98%;
         padding: 0;
         background: $bg-color-input-color;
@@ -72,17 +77,13 @@ $bg-color-input-color: transparent;
         }
 
         &::-webkit-color-swatch {
-          border-radius: 35%;
           border: 1px solid $bg-color-input-color;
+          border-radius: 35%;
         }
-      }
-
-      .notes-info__description {
-        font-size: 16px;
       }
     }
 
-    .notes-form__buttons-section {
+    .notes-form__buttons-section_onError {
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -97,15 +98,15 @@ $bg-color-input-color: transparent;
         }
       }
 
-      .error-message {
+      .notes-form__error-message {
         margin-left: 10px;
         font-size: 12px;
         color: $error-color;
       }
     }
 
-    .buttons-section {
-      @extend .notes-form__buttons-section;
+    .notes-form__buttons-section {
+      @extend .notes-form__buttons-section_onError;
       justify-content: flex-end;
     }
   }

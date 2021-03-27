@@ -1,6 +1,7 @@
 @import "../../mixinsStyles/mixinsStyles.scss";
 
-$bg-create-button-color: #28b6f6;
+$bg-button-color: #28b6f6;
+$box-shadow-button-color: #223c5033;
 $scale: scale(1.15);
 
 .create-notes-button {
@@ -11,16 +12,16 @@ $scale: scale(1.15);
   height: 50px;
   border-radius: 50%;
   font-size: 28px;
-  background-color: $bg-create-button-color;
-  @include box-shadow(0px, 4px, 10px, 2px, rgba(34, 60, 80, 0.2));
+  background-color: $bg-button-color;
+  @include box-shadow(0px, 4px, 10px, 2px, $box-shadow-button-color);
 
   &:hover {
-    background-color: $bg-create-button-color;
+    background-color: $bg-button-color;
     transform: $scale;
   }
 }
 
-.create-notes-button__popup-open {
+.create-notes-button_modal_open {
   @extend .create-notes-button;
   transform: $scale;
 }

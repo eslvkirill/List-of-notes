@@ -1,21 +1,21 @@
 import React from "react";
-import { usePopUp } from "../../containers/Contexts/PopUpContext";
+import { useModal } from "../../containers/Contexts/ModalContext";
 import Button from "../UiItems/Button/Button";
 import "./CreateNotesButton.scss";
 
 const CreateNotesButton = (props) => {
-  const { popUp, changePopUpWindow, setPopUpType } = usePopUp();
+  const { modal, changeModal, setModalType } = useModal();
 
   const onClickHandler = () => {
-    setPopUpType("create");
+    setModalType("create");
     props.setScaleButton(false);
-    changePopUpWindow();
+    changeModal();
   };
 
   return (
     <Button
       className={`create-notes-button${
-        popUp && !props.scaleButton ? "__popup-open" : ""
+        modal && !props.scaleButton ? "_modal_open" : ""
       }`}
       onClick={onClickHandler}
     >

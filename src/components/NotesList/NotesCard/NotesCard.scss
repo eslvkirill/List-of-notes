@@ -1,13 +1,15 @@
 @import "../../../mixinsStyles/mixinsStyles.scss";
 
-$notes-card-primary-color: rgba(20, 20, 20, 0.87);
-$notes-card-text-shadow: 1px 0px 1px rgba(255, 255, 255, 0.603),
-  1px 0 1px rgba(36, 36, 36, 0.418);
-$notes-card-border-color: #c6bdbd;
-$bg-trash-can-hover-color: #cf3535d7;
+$card-primary-color: #141414de;
+$card-text-shadow: 1px 0px 1px #ffffff9a, 1px 0 1px #2424246b;
+$card-border-color: #c6bdbd;
+$card-box-shadow-color: #223c5099;
+$border-color-trash-can: #000000;
+$bg-hover-trash-can-color: #cf3535d7;
 $scrollbar-thumb-color: #28b6f6;
 $scrollbar-thumb-border-color: #37104d;
 $scrollbar-track-piece-color: transparent;
+$animate-card: opacity 500ms, transform 500ms;
 
 .notes-list__wrapper {
   @include flexible();
@@ -27,15 +29,15 @@ $scrollbar-track-piece-color: transparent;
     max-height: 400px;
     margin-bottom: 15px;
     padding: 11px 12px;
-    border: 2px solid $notes-card-border-color;
+    border: 2px solid $card-border-color;
     border-radius: 10px;
-    text-shadow: $notes-card-text-shadow;
-    color: $notes-card-primary-color;
+    text-shadow: $card-text-shadow;
+    color: $card-primary-color;
     word-break: break-all;
     overflow-wrap: break-word;
     overflow: auto;
     cursor: pointer;
-    @include box-shadow(5px, 5px, 5px, -5px, rgba(34, 60, 80, 0.6));
+    @include box-shadow(5px, 5px, 5px, -5px, $card-box-shadow-color);
     transition: 0.3s;
 
     &:hover {
@@ -78,12 +80,12 @@ $scrollbar-track-piece-color: transparent;
       margin-left: auto;
       width: 50px;
       font-size: 30px;
-      border: 2px solid #000000;
+      border: 2px solid $border-color-trash-can;
       border-radius: 5px;
       background-color: transparent;
 
       &:hover {
-        background-color: $bg-trash-can-hover-color;
+        background-color: $bg-hover-trash-can-color;
       }
     }
   }
@@ -96,7 +98,7 @@ $scrollbar-track-piece-color: transparent;
   .note-enter-active {
     opacity: 1;
     transform: translateX(0);
-    transition: opacity 500ms, transform 500ms;
+    transition: $animate-card;
   }
 
   .note-exit {
@@ -106,6 +108,6 @@ $scrollbar-track-piece-color: transparent;
   .note-exit-active {
     opacity: 0;
     transform: scale(0.9);
-    transition: opacity 500ms, transform 500ms;
+    transition: $animate-card;
   }
 }

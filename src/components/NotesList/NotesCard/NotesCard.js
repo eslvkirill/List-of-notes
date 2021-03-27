@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../../UiItems/Button/Button.js";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import Button from "../../UiItems/Button/Button.js";
 import "./NotesCard.scss";
 
 const NotesCard = (props) => (
