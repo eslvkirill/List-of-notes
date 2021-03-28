@@ -24,9 +24,6 @@ export const NotesProvider = ({ children }) => {
   const [filterNotes, setFilterNotes] = useState(notes);
   const [notesTextInput, setNotesTextInput] = useState("");
 
-  const checkNotesData =
-    filterNotes.length !== 0 || filterNotes.length === 0 ? filterNotes : notes;
-
   const funcToSetState = (func) => {
     const isFuncExist = func ? func(notes) : notes;
 
@@ -46,7 +43,6 @@ export const NotesProvider = ({ children }) => {
         setFilterNotes,
         notesTextInput,
         setNotesTextInput,
-        checkNotesData,
         funcToSetState,
       }}
     >
