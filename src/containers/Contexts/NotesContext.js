@@ -1,35 +1,41 @@
 import React, { useContext, useState } from "react";
 
-const NotesContext = React.createContext();
-
-const notesExample = [
+const notesInitialState = [
   {
     id: 1,
     title: "Первая заметка",
     description: "Описание моей заметки",
-    color: "#c1f5ff",
+    color: "#dcadff",
   },
   {
     id: 2,
     title: "Вторая заметка",
-    description: "Самая\nбольшая\nбольшая\nбольшая\nзаметка",
-    color: "#dcadff",
+    description: "******\n######\n******\n######\n******\n######\n******",
+    color: "#c1f5ff",
   },
 ];
+
+const NotesContext = React.createContext();
 
 export const useNotes = () => useContext(NotesContext);
 
 export const NotesProvider = ({ children }) => {
-  const [notes, setNotes] = useState(notesExample);
+  const [notes, setNotes] = useState(notesInitialState);
   const [filterNotes, setFilterNotes] = useState(notes);
-  const [filterNotesText, setFilterNotesText] = useState("");
+  const [notesTextInput, setNotesTextInput] = useState("");
 
-  const condition =
-    filterNotes !== null &&
-    (filterNotes.length !== 0 || filterNotes.length === 0);
+  const checkNotesData =
+    filterNotes.length !== 0 || filterNotes.length === 0 ? filterNotes : notes;
 
-  const checkNotesData = condition ? filterNotes : notes;
-  const setCheckNotesData = condition ? setFilterNotes : setNotes;
+  const funcToSetState = (func) => {
+    const isFuncExist = func ? func(notes) : notes;
+
+    if (setFilterNotes) {
+      setNotes(isFuncExist);
+      setFilterNotes(isFuncExist);
+      setNotesTextInput("");
+    }
+  };
 
   return (
     <NotesContext.Provider
@@ -38,10 +44,10 @@ export const NotesProvider = ({ children }) => {
         setNotes,
         filterNotes,
         setFilterNotes,
-        filterNotesText,
-        setFilterNotesText,
+        notesTextInput,
+        setNotesTextInput,
         checkNotesData,
-        setCheckNotesData,
+        funcToSetState,
       }}
     >
       {children}
