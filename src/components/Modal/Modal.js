@@ -18,14 +18,8 @@ const Modal = () => {
     setFormValid,
     clearForm,
   } = useForm();
+  const { notes, funcToSetState } = useNotes();
   const { modal, changeModal, modalType } = useModal();
-  const {
-    notes,
-    setNotes,
-    setFilterNotes,
-    checkNotesData,
-    setCheckNotesData,
-  } = useNotes();
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
   const createNotes = () => {
@@ -35,31 +29,28 @@ const Modal = () => {
       description: notesFields.description.value,
       color: notesFields.color.value,
     };
-    const setNewNotice = (storage) => [{ ...newNotes }, ...storage];
-
-    setCheckNotesData(setNewNotice(checkNotesData));
-    if (setCheckNotesData === setFilterNotes) setNotes(setNewNotice(notes));
+    funcToSetState((storage) => [{ ...newNotes }, ...storage]);
   };
 
   const editNote = () => {
-    checkNotesData.map((note) => {
+    notes.map((note) => {
       Object.keys(notesFields).map((formField) => {
         if (note.id === notesFields[formField].noteId) {
           note[formField] = notesFields[formField].value;
-          checkNotesData.splice(
+          notes.splice(
             0,
             0,
-            checkNotesData.splice(
-              checkNotesData.findIndex((v) => v.id === note.id),
+            notes.splice(
+              notes.findIndex((v) => v.id === note.id),
               1
             )[0]
           );
         }
-        return checkNotesData;
+        return notes;
       });
       return note;
     });
-    setCheckNotesData(checkNotesData);
+    funcToSetState();
   };
 
   const resetAll = () => {

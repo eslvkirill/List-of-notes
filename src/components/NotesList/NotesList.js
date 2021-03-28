@@ -8,14 +8,7 @@ import "./NotesList.scss";
 
 const NotesCards = () => {
   const [scaleButton, setScaleButton] = useState(false);
-  const {
-    notes,
-    setNotes,
-    filterNotes,
-    setFilterNotes,
-    checkNotesData,
-    setCheckNotesData,
-  } = useNotes();
+  const { notes, filterNotes, checkNotesData, funcToSetState } = useNotes();
   const { changeModal, modalType, setModalType } = useModal();
   const { notesFields, setNotesFields, setFormValid } = useForm();
 
@@ -25,14 +18,9 @@ const NotesCards = () => {
       "Вы действительно хотите удалить эту заметку?"
     );
 
-    const removeData = (storage) =>
-      confirm ? storage.filter((note) => note.id !== noteId) : storage;
-
-    setCheckNotesData(removeData(checkNotesData));
-
-    if (setCheckNotesData === setFilterNotes) {
-      setNotes(removeData(notes));
-    }
+    funcToSetState((storage) =>
+      confirm ? storage.filter((note) => note.id !== noteId) : storage
+    );
   };
 
   const editNotesCard = (noteId) => {
@@ -65,9 +53,7 @@ const NotesCards = () => {
         />
       ) : (
         <div className="notes-list__empty-notes">
-          {filterNotes !== null &&
-          filterNotes.length === 0 &&
-          notes.length !== 0
+          {filterNotes.length === 0 && notes.length !== 0
             ? "Ничего не найдено :("
             : "Создайте Вашу первую заметку!"}
         </div>

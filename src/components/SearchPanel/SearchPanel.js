@@ -9,31 +9,28 @@ import "./SearchPanel.scss";
 const SearchPanel = () => {
   const {
     notes,
-    setNotes,
     filterNotes,
+    setNotes,
     setFilterNotes,
-    setFilterNotesText,
-    filterNotesText,
+    setNotesTextInput,
+    notesTextInput,
   } = useNotes();
   const [filteredData, setFilteredData] = useState([]);
 
   const searchHandler = (event) => {
     event.preventDefault();
 
-    if (filterNotesText !== "") {
+    if (notesTextInput.trim() !== "") {
       setFilterNotes(filteredData);
       setNotes(notes);
-      console.log("filterNotes ", filterNotes);
-      console.log("notes ", notes);
-    } else {
-      setFilterNotes(notes);
-    }
+    } else setFilterNotes(notes);
   };
 
   const onChangeInputHandler = (event) => {
-    const value = event.target.value.toLowerCase().trim();
+    const eValue = event.target.value;
+    const value = eValue.toLowerCase().trim();
     const excludeFields = ["id", "color"];
-    setFilterNotesText(value);
+    setNotesTextInput(eValue);
 
     if (value !== "") {
       const filteredNotes = notes.filter((note) => {
@@ -53,7 +50,7 @@ const SearchPanel = () => {
       <form action="" method="get" className="header__search-form search-form">
         <Button
           type="submit"
-          className="search-form__button"
+          className="search-form__search-button"
           onClick={(event) => searchHandler(event)}
         >
           <FontAwesomeIcon icon={faSearch} className="search-form__icon-logo" />
@@ -62,10 +59,19 @@ const SearchPanel = () => {
           type="search"
           placeholder="Поиск"
           autoComplete="off"
+          value={notesTextInput}
           className="search-form__input"
           onChange={(event) => onChangeInputHandler(event)}
         />
       </form>
+      {(filterNotes.length === 0 || filterNotes.length !== notes.length) &&
+      notes.length !== 0 ? (
+        <div className="header_notes-not-found">
+          Очистите поле ввода, чтобы увидеть все Ваши заметки
+        </div>
+      ) : (
+        ""
+      )}
       <hr className="header__hr-line hr-line" />
     </header>
   );
