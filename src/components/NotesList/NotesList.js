@@ -8,7 +8,7 @@ import "./NotesList.scss";
 
 const NotesCards = () => {
   const [scaleButton, setScaleButton] = useState(false);
-  const { notes, filterNotes, checkNotesData, funcToSetState } = useNotes();
+  const { notes, filterNotes, funcToSetState } = useNotes();
   const { changeModal, modalType, setModalType } = useModal();
   const { notesFields, setNotesFields, setFormValid } = useForm();
 
@@ -28,7 +28,7 @@ const NotesCards = () => {
     setModalType("save");
     setScaleButton(true);
 
-    checkNotesData.map((note) => {
+    filterNotes.map((note) => {
       if (note.id === noteId) {
         Object.keys(notesFields).map((formField) => {
           notesFields[formField].noteId = note.id;
@@ -44,9 +44,9 @@ const NotesCards = () => {
 
   return (
     <main className="notes-list">
-      {checkNotesData.length ? (
+      {filterNotes.length ? (
         <NotesCard
-          notes={checkNotesData}
+          notes={filterNotes}
           modalType={modalType}
           removeNotesCard={removeNotesCard}
           editNotesCard={editNotesCard}
